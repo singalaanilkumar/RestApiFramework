@@ -46,7 +46,7 @@ public class BasicApiRun {
                 .then().assertThat().log().all().statusCode(200).body("msg", equalTo("Address successfully updated"));
 
         //Get Place
-        String getPlaceResponse=	given().log().all().queryParam("key", "qaclick123")
+       /* String getPlaceResponse=given().log().all().queryParam("key", "qaclick123")
                 .queryParam("place_id",placeId)
                 .when().get("maps/api/place/get/json")
                 .then().assertThat().log().all().statusCode(200).extract().response().asString();
@@ -54,7 +54,16 @@ public class BasicApiRun {
         String actualAddress =js1.getString("address");
         System.out.println(actualAddress);
         Assert.assertEquals(actualAddress, "Pacific ocean");
-        //Cucumber Junit, Testng
+        //Cucumber Junit, Testng*/
+
+        String getResponse=given().log().all().queryParam("key","qaclick123")
+                .queryParam("place_id",placeId)
+                .when().get("maps/api/place/get/json")
+                .then().assertThat().log().all().statusCode(200).extract().asString();
+
+        JsonPath js2 = ReUsableMethods.rawToJson(getResponse);
+        String actualAddress = js2.getString("address");
+        Assert.assertEquals(actualAddress,newAddress);
     }
 
     }
